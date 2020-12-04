@@ -12,17 +12,20 @@ export default function handleContainerEvents() {
           map.applyTransform()
           oldPageX = e.pageX
           oldPageY = e.pageY
+		      map.isDragging = true;
         }
         return false
       }).on('mousedown', (e) => {
         mouseDown = true
         oldPageX = e.pageX
         oldPageY = e.pageY
+		    map.isDragging = false;
         return false
       })
 
     Util.$('body').on('mouseup', () => {
       mouseDown = false
+	    map.isDragging = false;
     })
   }
 

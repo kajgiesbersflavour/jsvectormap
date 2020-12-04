@@ -63,11 +63,8 @@ export default function handleElementEvents() {
   this.container.delegate('.jsvmap-element', 'mouseup', function (event) {
 
     const data = parseEvent(map, this)
-
-    if (
-      (data.type === 'region' && map.params.regionsSelectable) ||
-      (data.type === 'marker' && map.params.markersSelectable)
-    ) {
+    if (!map.isDragging && (data.type === 'region' && map.params.regionsSelectable || data.type === 'marker' && map.params.markersSelectable))
+	{
       if (!event.defaultPrevented) {
         const el = data.element
 
