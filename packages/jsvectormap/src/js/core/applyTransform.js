@@ -1,20 +1,23 @@
 export default function applyTransform() {
   let maxTransX, maxTransY, minTransX, minTransY
+    const padFractionX = (this.params.mapPadding || 0) * this._defaultWidth
+    const padFractionY = (this.params.mapPadding || 0) * this._defaultHeight
+
 
   if (this._defaultWidth * this.scale <= this._width) {
-    maxTransX = (this._width - this._defaultWidth * this.scale) / (2 * this.scale)
-    minTransX = (this._width - this._defaultWidth * this.scale) / (2 * this.scale)
+    maxTransX = (this._width - this._defaultWidth * this.scale) / (2 * this.scale) + padFractionX
+    minTransX = (this._width - this._defaultWidth * this.scale) / (2 * this.scale) - padFractionX
   } else {
-    maxTransX = 0
-    minTransX = (this._width - this._defaultWidth * this.scale) / this.scale
+    maxTransX = padFractionX
+    minTransX = (this._width - this._defaultWidth * this.scale) / this.scale - padFractionX
   }
 
   if (this._defaultHeight * this.scale <= this._height) {
-    maxTransY = (this._height - this._defaultHeight * this.scale) / (2 * this.scale)
-    minTransY = (this._height - this._defaultHeight * this.scale) / (2 * this.scale)
+    maxTransY = (this._height - this._defaultHeight * this.scale) / (2 * this.scale) + padFractionY
+    minTransY = (this._height - this._defaultHeight * this.scale) / (2 * this.scale) - padFractionY
   } else {
-    maxTransY = 0
-    minTransY = (this._height - this._defaultHeight * this.scale) / this.scale
+    maxTransY = padFractionY
+    minTransY = (this._height - this._defaultHeight * this.scale) / this.scale - padFractionY
   }
 
   if (this.transY > maxTransY) {

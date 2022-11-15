@@ -17,6 +17,9 @@ import getMarkerPosition from './getMarkerPosition'
 import _repositionLines from './repositionLines'
 import _repositionMarkers from './repositionMarkers'
 import _repositionLabels from './repositionLabels'
+import _applyAndReposition from './applyAndReposition'
+import _processDrag from './processDrag'
+import _processDragEnd from './processDragEnd'
 
 export default {
   _setupContainerEvents,
@@ -38,4 +41,8 @@ export default {
   _repositionLines,
   _repositionMarkers,
   _repositionLabels,
+  _applyAndReposition,
+  _processDrag,
+  _processDragEnd
+
 }

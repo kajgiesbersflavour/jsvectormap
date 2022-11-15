@@ -8,7 +8,8 @@ export default function setupContainerTouchEvents() {
       touchY,
       centerTouchX,
       centerTouchY,
-      lastTouchesLength
+      lastTouchesLength,
+      isTouchPanning = false
 
   let handleTouchEvent = e => {
     const touches = e.touches
@@ -16,17 +17,36 @@ export default function setupContainerTouchEvents() {
 
     if (e.type == 'touchstart') {
       lastTouchesLength = 0
+      isTouchPanning = true
     }
+
+    if (e.type == 'touchend' || e.type == 'touchcancel') {
+      if (touches.length == 0 && isTouchPanning) {
+        isTouchPanning = false;
+        map._processDragEnd();
+      }
+      lastTouchesLength = touches.length;
+      if (touches.length == 1) {
+        touchX = touches[0].pageX;
+        touchY = touches[0].pageY;
+      }
+      return;
+    }
+
 
     if (touches.length == 1) {
       if (lastTouchesLength == 1) {
         transXOld = map.transX
         transYOld = map.transY
-        map.transX -= (touchX - touches[0].pageX) / map.scale
-        map.transY -= (touchY - touches[0].pageY) / map.scale
+        const deltaX = -(touchX - touches[0].pageX) / map.scale;
+        const deltaY = -(touchY - touches[0].pageY) / map.scale;
+        map._processDrag(deltaX, deltaY);
+
+
 
         map._tooltip?.hide()
         map._applyTransform()
+        map._emit(Events.onMapMoved, [map]);
 
         if (transXOld != map.transX || transYOld != map.transY) {
           e.preventDefault()
@@ -82,4 +102,6 @@ export default function setupContainerTouchEvents() {
 
   EventHandler.on(map.container, 'touchstart', handleTouchEvent)
   EventHandler.on(map.container, 'touchmove', handleTouchEvent)
+  EventHandler.on(map.container, 'touchend', handleTouchEvent);
+  EventHandler.on(map.container, 'touchcancel', handleTouchEvent);
 }

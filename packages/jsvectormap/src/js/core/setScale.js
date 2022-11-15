@@ -44,12 +44,11 @@ export default function setScale(scale, anchorX, anchorY, isCentered, animate) {
       this.transX = (transXStart + transXDiff * i) / this.scale
       this.transY = (transYStart + transYDiff * i) / this.scale
       this._applyTransform()
+      this._emit(Events.onViewportChange, [
+        this.scale, this.transX, this.transY
+      ])
       if (i == count) {
         clearInterval(interval)
-
-        this._emit(Events.onViewportChange, [
-          this.scale, this.transX, this.transY
-        ])
       }
     }, 10)
   } else {

@@ -1,6 +1,7 @@
 export default {
   map: 'world',
   backgroundColor: 'transparent',
+  mapPadding: 0,
   draggable: true,
   zoomButtons: true,
   zoomOnScroll: true,

@@ -1,4 +1,5 @@
 import EventHandler from '../eventHandler'
+import Events from '../defaults/events'
 
 export default function setupContainerEvents() {
   const map = this
@@ -12,11 +13,15 @@ export default function setupContainerEvents() {
         return false
       }
 
-      map.transX -= (oldPageX - e.pageX) / map.scale
-      map.transY -= (oldPageY - e.pageY) / map.scale
-      map._applyTransform()
+      const deltaX = -(oldPageX - e.pageX) / map.scale;
+      const deltaY = -(oldPageY - e.pageY) / map.scale;
+      map._processDrag(deltaX, deltaY);
+
+
+
       oldPageX = e.pageX
       oldPageY = e.pageY
+      map._emit(Events.onMapMoved, [this])
     })
 
     EventHandler.on(this.container, 'mousedown', (e) => {
@@ -27,6 +32,9 @@ export default function setupContainerEvents() {
     })
 
     EventHandler.on(document.body, 'mouseup', () => {
+      if (mouseDown) {
+        map._processDragEnd();
+      }
       mouseDown = false
     })
   }
