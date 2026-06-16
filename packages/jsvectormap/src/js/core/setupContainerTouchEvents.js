@@ -1,4 +1,5 @@
 import EventHandler from '../eventHandler'
+import Events from "../defaults/events";
 
 export default function setupContainerTouchEvents() {
   let map = this,
